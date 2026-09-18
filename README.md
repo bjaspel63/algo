@@ -1,20 +1,29 @@
-# Algorithm Quest — Real-Time Classroom A (Clean Build)
+# Algorithm Quest v2
 
-## What this version does
-- Teacher creates a live game and receives a 5-character code.
-- Students join from separate devices.
-- Teacher controls Level 1 MCQ, Level 2 In Order, and Level 3 Robot Game.
-- Scores are stored in Firebase Realtime Database and displayed live on the teacher screen.
-- Each team can submit only once per question, preventing duplicate scoring by multiple students.
-- Robot movement supports forward, left, and right turns and blocks obstacles.
+## Changes
+- Improved classroom UI/UX.
+- Maximum 10 teams: Red, Blue, Green, Yellow, Orange, Purple, Pink, Teal, Gold, Silver.
+- Team Challenge: 10 MCQ, 30 seconds per question, maximum 5 minutes for the MCQ level.
+- Teams progress independently; there is no teacher Next Question button.
+- Team In Order: 5 challenges.
+- Team Robot: 5 fixed/deterministic missions. Every device sees the same walls and each mission has a guaranteed route.
+- Individual: 10 MCQ + 5 Robot missions + 5 In Order challenges.
+- Individual certificate shows name and total score.
+- Team submissions use a Firebase transaction so two students cannot score/advance the same team/question twice.
 
-## Firebase setup
-1. Create a Firebase project and Web App.
-2. Enable Realtime Database.
-3. Copy the Web App configuration into `firebase-config.js`.
-4. Serve the folder from HTTPS hosting (Firebase Hosting, Netlify, Vercel, etc.). Do not open with `file://`.
-5. For a classroom prototype, database test rules can be used temporarily. Before wider use, add authentication and stricter rules.
+## Run
+Use Firebase Hosting or another web server such as VS Code Live Server. Do not open index.html directly with file://.
 
-## Classroom flow
-Teacher: open `teacher.html` → Create Game → display code → Start Level → use Next Question.
-Students: open `student.html` → enter code/name/team → answer on their devices.
+## Firebase
+Enable Realtime Database for the project. For classroom testing, the database rules must allow the app to read/write. A temporary test configuration is:
+
+```json
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+```
+
+For a public deployment, replace this with authenticated/restricted rules.
