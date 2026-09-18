@@ -1,4 +1,10 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Algorithm Quest — Student</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="top"><div><span class="eyebrow">P4 ICT</span><h1>🤖 Algorithm Quest <small>Student</small></h1></div><a class="ghost" href="teacher.html">Teacher Host</a></header>
-<main class="wrap"><section id="join" class="panel narrow"><span class="eyebrow">JOIN</span><h2>Join Team Challenge</h2><label>Game code<input id="gameCode" maxlength="5" placeholder="ABCDE" autocomplete="off"></label><label>Your name<input id="studentName" placeholder="First name"></label><div id="teamPicker" class="teamPicker"></div><button id="joinBtn" class="primary">Join Game</button><p id="joinMsg" class="message"></p></section>
-<section id="game" class="hidden"><div class="hostbar"><div><span>TEAM</span><strong id="myTeam">—</strong></div><div><span>SCORE</span><strong id="myScore">0</strong></div><div><span>LEVEL</span><strong id="myLevel">Waiting</strong></div></div><section id="play" class="panel"></section></section></main><script type="module" src="student.js"></script></body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Algorithm Quest — Student</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="top"><div class="brand"><span class="eyebrow">P4 ICT • LIVE CLASSROOM</span><h1>🤖 Algorithm Quest</h1></div><a class="ghost" href="teacher.html">Teacher Host</a></header>
+<main class="wrap">
+<section id="join" class="panel hero narrow"><span class="eyebrow">JOIN YOUR TEAM</span><h2>Ready to play?</h2><p class="lead">Enter the game code, your name, and choose your team.</p><label>Game code<input id="gameCode" maxlength="5" placeholder="ABCDE" autocomplete="off"></label><label>Your name<input id="studentName" placeholder="First name"></label><div id="teamPicker" class="teamPicker"></div><button id="joinBtn" class="primary big">Join Game</button><p id="joinMsg" class="message"></p></section>
+<section id="game" class="hidden"><div class="hostbar studentbar"><div><span>TEAM</span><strong id="myTeam">—</strong></div><div><span>MY SCORE</span><strong id="myScore">0</strong></div><div><span>LEVEL</span><strong id="myLevel">WAITING</strong></div><div><span>QUESTION</span><strong id="myProgress">—</strong></div></div><section id="play" class="panel gamecard"></section></section>
+</main>
+<div id="celebration" class="modal hidden"><div class="modalcard"><div id="confetti"></div><div class="trophy">🏆</div><span class="eyebrow">WINNING TEAM</span><h2 id="winnerTitle">Congratulations!</h2><p id="winnerNames"></p><div class="winnerScore" id="winnerScore"></div></div></div>
+<script type="module" src="student.js"></script></body></html>
