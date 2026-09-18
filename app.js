@@ -7,6 +7,14 @@ const db = getDatabase(firebaseApp);
 const $ = id => document.getElementById(id);
 const screens=[...document.querySelectorAll(".screen")];
 const show=id=>screens.forEach(s=>s.classList.toggle("active",s.id===id));
+
+// Global navigation: every button with data-screen is clickable.
+document.addEventListener("click", event=>{
+  const button=event.target.closest("[data-screen]");
+  if(!button)return;
+  const target=button.dataset.screen;
+  if(document.getElementById(target)) show(target);
+});
 const clean=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let code="",team="",playerName="",playerId="",game=null,listeners=[],clock=null;
 const TEAM_NAMES=["Red","Blue","Green","Yellow","Orange","Purple","Pink","Teal","Gold","Silver"];
