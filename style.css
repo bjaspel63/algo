@@ -23,10 +23,8 @@ body {
   min-height: 100vh;
 }
 
-/* Hide helper - Crucial fix */
-.hidden {
-  display: none !important;
-}
+/* Crucial Utility Fix */
+.hidden { display: none !important; }
 
 header {
   height: 70px;
@@ -198,33 +196,75 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .opt-btn:hover { border-color: #3b82f6; background: #eff6ff; }
 .timer-box { font-size: 32px; font-weight: 800; color: #ef4444; text-align: center; margin-bottom: 10px; }
 
-/* Sequencing Game */
-.seq-list { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+/* Drag and Drop Sequence */
+.seq-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
 .seq-item {
-  background: #f8fafc;
+  background: white;
   border: 3px solid #cbd5e1;
-  padding: 14px 18px;
-  border-radius: 16px;
+  padding: 16px 20px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 18px;
   font-weight: 700;
-  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.15s, border-color 0.15s;
 }
-.seq-controls { display: flex; gap: 6px; }
-.arrow-btn { background: #e2e8f0; border: none; padding: 6px 12px; border-radius: 10px; cursor: pointer; font-size: 18px; }
+.seq-item.dragging { opacity: 0.4; border-color: #3b82f6; background: #eff6ff; }
+.seq-item.success-flash { border-color: #2ed573; background: #dcfce7; animation: bounce 0.4s; }
+.drag-handle { color: #94a3b8; font-size: 20px; margin-right: 12px; }
 
-/* Robot Game */
-.robotLayout { display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+/* Robot Game & Queue */
+.robotLayout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
 .robotGrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; background: #cbd5e1; padding: 8px; border-radius: 20px; }
-.cell { aspect-ratio: 1; background: white; border-radius: 12px; display: grid; place-items: center; font-size: 26px; }
+.cell { aspect-ratio: 1; background: white; border-radius: 12px; display: grid; place-items: center; font-size: 28px; }
 .cell.wall { background: #475569; }
 .cell.goal { background: #bbf7d0; border: 3px solid #22c55e; }
-.cell.robot { background: #fef08a; transform: transition 0.2s; }
+.cell.robot { background: #fef08a; border: 3px solid #f59e0b; }
 
-.command-box { background: #f8fafc; border: 2px dashed #cbd5e1; padding: 12px; border-radius: 16px; min-height: 50px; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-.cmd-chip { background: #3b82f6; color: white; padding: 6px 12px; border-radius: 10px; font-weight: 800; font-size: 14px; }
+.command-box {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  padding: 10px;
+  border-radius: 16px;
+  min-height: 70px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  margin: 10px 0;
+}
+.cmd-chip {
+  background: #3b82f6;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: grab;
+  user-select: none;
+}
+.cmd-chip.dragging { opacity: 0.4; }
+.cmd-del-btn {
+  background: rgba(255,255,255,0.25);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+}
+.cmd-del-btn:hover { background: #ef4444; }
+
 .control-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 15px 0; }
 .control-pad button:first-child { grid-column: 2; }
 
@@ -252,6 +292,7 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .feedback-msg { text-align: center; font-size: 20px; font-weight: 800; margin-top: 15px; min-height: 30px; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 
 @media(max-width: 768px) {
   .robotLayout { grid-template-columns: 1fr; }
