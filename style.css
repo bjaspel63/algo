@@ -23,7 +23,6 @@ body {
   min-height: 100vh;
 }
 
-/* Crucial Utility Fix */
 .hidden { display: none !important; }
 
 header {
@@ -90,7 +89,7 @@ header {
 .card-btn small { color: var(--text-muted); font-size: 14px; }
 
 .wrap { max-width: 1100px; margin: auto; }
-.narrow { max-width: 580px; }
+.narrow { max-width: 580px; margin-left: auto; margin-right: auto; }
 .head { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 20px; }
 .head h2 { margin: 5px 0; font-size: 32px; }
 
@@ -147,7 +146,7 @@ input, select, textarea {
 }
 input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: white; }
 
-/* Host Grid Layout for 6 Teams */
+/* Host Grid Layout */
 .count-tag { background: #3b82f6; color: white; padding: 4px 12px; border-radius: 99px; font-size: 14px; }
 .teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
 .team-card {
@@ -196,7 +195,7 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .opt-btn:hover { border-color: #3b82f6; background: #eff6ff; }
 .timer-box { font-size: 32px; font-weight: 800; color: #ef4444; text-align: center; margin-bottom: 10px; }
 
-/* Drag and Drop Sequence */
+/* Drag & Drop Sequence */
 .seq-list { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
 .seq-item {
   background: white;
@@ -216,9 +215,9 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .seq-item.success-flash { border-color: #2ed573; background: #dcfce7; animation: bounce 0.4s; }
 .drag-handle { color: #94a3b8; font-size: 20px; margin-right: 12px; }
 
-/* Robot Game & Queue */
-.robotLayout { display: grid; grid-template-columns: 1fr 280px; gap: 20px; }
-.robotGrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; background: #cbd5e1; padding: 8px; border-radius: 20px; }
+/* Robot Game Layout Fix */
+.robotLayout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; align-items: start; }
+.robotGrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; background: #cbd5e1; padding: 12px; border-radius: 20px; max-width: 500px; margin: 0 auto; }
 .cell { aspect-ratio: 1; background: white; border-radius: 12px; display: grid; place-items: center; font-size: 28px; }
 .cell.wall { background: #475569; }
 .cell.goal { background: #bbf7d0; border: 3px solid #22c55e; }
@@ -227,9 +226,9 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .command-box {
   background: #f8fafc;
   border: 2px dashed #cbd5e1;
-  padding: 10px;
+  padding: 12px;
   border-radius: 16px;
-  min-height: 70px;
+  min-height: 80px;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -294,7 +293,7 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
 
-@media(max-width: 768px) {
+@media(max-width: 850px) {
   .robotLayout { grid-template-columns: 1fr; }
   .cards { grid-template-columns: 1fr; }
 }
