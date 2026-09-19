@@ -120,7 +120,7 @@
   <div class="head">
     <div style="display: flex; align-items: center; gap: 12px;">
       <span id="myTeam" class="team-badge"></span>
-      <button id="openLeaderboard" class="btn btn-primary" style="padding: 6px 14px; font-size: 14px;">🏆 Leaderboard</button>
+      <button id="openLeaderboard" class="btn btn-primary" style="padding: 6px 14px; font-size: 14px;">🏆 Fullscreen Leaderboard</button>
     </div>
     <div class="score-badge">SCORE <b id="myScore">0</b></div>
   </div>
@@ -184,14 +184,18 @@
 </section>
 </main>
 
-<!-- LIVE LEADERBOARD MODAL (FOR STUDENTS) -->
-<div id="leaderboardModal" class="modal hidden">
-  <div class="winnerCard" style="max-width: 550px; text-align: left;">
-    <div class="head" style="margin-bottom: 15px;">
-      <h2 style="margin:0;">🏆 Live Leaderboard</h2>
-      <button id="closeLeaderboard" class="btn back-btn" style="padding: 6px 14px;">✖ Close</button>
+<!-- FULLSCREEN LIVE LEADERBOARD OVERLAY -->
+<div id="leaderboardModal" class="fullscreen-modal hidden">
+  <div class="fullscreen-leaderboard-container">
+    <div class="lb-header">
+      <div>
+        <small class="pill-tag" style="background:#e0f2fe; color:#0284c7;">LIVE STANDINGS</small>
+        <h1>🏆 Leaderboard</h1>
+      </div>
+      <button id="closeLeaderboard" class="btn back-btn btn-lg">✖ Close Leaderboard</button>
     </div>
-    <div id="liveLeaderboardList" class="leaderboard-modal-list"></div>
+
+    <div id="liveLeaderboardList" class="fullscreen-lb-grid"></div>
   </div>
 </div>
 
