@@ -12,7 +12,7 @@ const clean = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','
 
 let code = "", team = "", playerName = "", playerId = "", game = null, listeners = [], clock = null;
 
-// Question & Level Banks
+// 10 MCQs Bank
 const MCQ = [
   ["What is an algorithm?", ["A step-by-step set of instructions", "A type of computer screen", "A secret password", "A colorful picture"], 0],
   ["Which makes an algorithm easy to follow?", ["Clear and exact steps", "Randomly skipped steps", "Secret instructions", "Missing steps"], 0],
@@ -26,13 +26,16 @@ const MCQ = [
   ["What happens if steps are in the wrong order?", ["The final result may be wrong", "Nothing changes", "You gain bonus points", "The game restarts"], 0]
 ];
 
+// 5 Sequences Bank
 const SEQ = [
   ["Make Toast 🍞", ["Get a slice of bread", "Put bread in toaster", "Push lever down", "Wait for it to toast", "Take out warm toast"]],
   ["Brush Teeth 🪥", ["Get toothbrush and toothpaste", "Put toothpaste on brush", "Brush teeth thoroughly", "Rinse mouth with water", "Put toothbrush away"]],
   ["Make a Sandwich 🥪", ["Get two slices of bread", "Spread butter or filling", "Put second slice on top", "Cut sandwich in half", "Enjoy your sandwich"]],
-  ["Plant a Seed 🪴", ["Get a plant pot", "Fill pot with soil", "Place seed in soil", "Cover seed gently", "Water it regularly"]]
+  ["Plant a Seed 🪴", ["Get a plant pot", "Fill pot with soil", "Place seed in soil", "Cover seed gently", "Water it regularly"]],
+  ["Wash Hands 🧼", ["Turn on tap and wet hands", "Apply soap to hands", "Rub hands for 20 seconds", "Rinse off soap with water", "Dry hands with clean towel"]]
 ];
 
+// 3 Robot Games Bank
 const ROBOT_MAPS = [
   { title: "Mission 1: Straight Ahead 🚀", size: 6, start: [0,0], dir: 1, goal: [0,4], walls: ["1,1", "1,2", "2,1"] },
   { title: "Mission 2: Turn the Corner ↪️", size: 6, start: [0,0], dir: 1, goal: [3,3], walls: ["0,2", "1,2", "2,0", "2,2"] },
@@ -197,14 +200,13 @@ function renderTeamLevel(curLevel, curIndex) {
   else renderRobot(curIndex, curLevel);
 }
 
-// 1. MCQ (Time-based score + Shuffled choices)
+// 1. MCQ
 function renderMCQ(idx, level, isIndividual = false, onIndComplete = null) {
   clearInterval(clock);
   let timeLeft = 30;
   const [qText, originalOpts, correctOrigIdx] = MCQ[idx];
   const correctText = originalOpts[correctOrigIdx];
 
-  // Jumble choices dynamically
   const shuffledOpts = originalOpts.map(opt => ({ opt, isCorrect: opt === correctText }))
     .sort(() => Math.random() - 0.5);
 
@@ -233,8 +235,6 @@ function renderMCQ(idx, level, isIndividual = false, onIndComplete = null) {
   async function handleAnswer(chosenIdx) {
     container.querySelectorAll("[data-ans]").forEach(b => b.disabled = true);
     const isCorrect = chosenIdx >= 0 && shuffledOpts[chosenIdx].isCorrect;
-
-    // Time-based scoring: 50 base points + up to 100 speed bonus
     const pointsEarned = isCorrect ? (50 + Math.round((timeLeft / 30) * 100)) : 0;
 
     if (isIndividual) {
@@ -252,7 +252,7 @@ function renderMCQ(idx, level, isIndividual = false, onIndComplete = null) {
   }
 }
 
-// 2. Sequencing Game (Draggable + Auto-advance on Drop)
+// 2. Sequencing Game
 function renderSeq(idx, level, isIndividual = false, onIndComplete = null) {
   clearInterval(clock);
   let timeLeft = 45;
@@ -264,7 +264,7 @@ function renderSeq(idx, level, isIndividual = false, onIndComplete = null) {
   function drawSeqUI() {
     container.innerHTML = `
       <div class="panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; justify-space-between; align-items:center;">
           <h3>${clean(title)}</h3>
           <div class="timer-box" style="font-size:22px; margin:0;">⏱️ <span id="seqTimer">45</span>s</div>
         </div>
@@ -355,11 +355,11 @@ function renderSeq(idx, level, isIndividual = false, onIndComplete = null) {
   }, 1000);
 }
 
-// 3. Robot Game (Arrow Avatar + Reorderable/Deletable Commands)
+// 3. Robot Game
 function renderRobot(idx, level, isIndividual = false, onIndComplete = null) {
   const map = ROBOT_MAPS[idx];
   let robotPos = [...map.start];
-  let robotDir = map.dir; // 0: Up, 1: Right, 2: Down, 3: Left
+  let robotDir = map.dir; 
   let commands = [];
   const dirs = ["⬆️", "➡️", "⬇️", "⬅️"];
 
@@ -430,10 +430,9 @@ function renderRobot(idx, level, isIndividual = false, onIndComplete = null) {
       };
     });
 
-    // Reorder command chips via drag & drop
     let dragCmdIdx = null;
     cmdBox.querySelectorAll(".cmd-chip").forEach(chip => {
-      chip.addEventListener("dragstart", e => {
+      chip.addEventListener("dragstart", () => {
         dragCmdIdx = +chip.dataset.cidx;
         chip.classList.add("dragging");
       });
@@ -547,7 +546,7 @@ function celebrateHost(teamEntries) {
 
 $("closeWinner").onclick = () => { $("winner").classList.add("hidden"); show("home"); };
 
-// 6. Synchronized Individual Mode
+// Individual Mode Engine (10 MCQs, 5 Sequences, 3 Robots)
 let ind = { name: "", score: 0, level: 1, index: 0 };
 
 $("startIndividual").onclick = () => {
@@ -555,27 +554,34 @@ $("startIndividual").onclick = () => {
   if (!ind.name) return;
   ind.score = 0; ind.level = 1; ind.index = 0;
   $("individualStart").classList.add("hidden");
-  $("individualArea").classList.remove("hidden");
+  $("individualGameContainer").classList.remove("hidden");
   renderIndividualStep();
 };
 
 function renderIndividualStep() {
+  $("indScore").textContent = ind.score;
+  const maxCount = ind.level === 1 ? MCQ.length : ind.level === 2 ? SEQ.length : ROBOT_MAPS.length;
+  
+  $("indLevelBadge").textContent = `Level ${ind.level}`;
+  $("indStepBadge").textContent = `${ind.level === 1 ? 'MCQ Quiz' : ind.level === 2 ? 'Sequence' : 'Robot Code'} • Step ${ind.index + 1} / ${maxCount}`;
+  $("indProgress").style.width = `${((ind.index + 1) / maxCount) * 100}%`;
+
   if (ind.level === 1) {
     renderMCQ(ind.index, 1, true, () => {
       ind.index++;
-      if (ind.index >= 3) { ind.level = 2; ind.index = 0; }
+      if (ind.index >= MCQ.length) { ind.level = 2; ind.index = 0; } // 10 MCQs
       renderIndividualStep();
     });
   } else if (ind.level === 2) {
     renderSeq(ind.index, 2, true, () => {
       ind.index++;
-      if (ind.index >= 2) { ind.level = 3; ind.index = 0; }
+      if (ind.index >= SEQ.length) { ind.level = 3; ind.index = 0; } // 5 Sequences
       renderIndividualStep();
     });
   } else if (ind.level === 3) {
     renderRobot(ind.index, 3, true, () => {
       ind.index++;
-      if (ind.index >= 2) finishIndividual();
+      if (ind.index >= ROBOT_MAPS.length) finishIndividual(); // 3 Robots
       else renderIndividualStep();
     });
   }
