@@ -132,21 +132,33 @@
 
 <!-- INDIVIDUAL MODE SCREEN -->
 <section id="individual" class="screen">
-<div class="wrap narrow">
+<div class="wrap">
   <div class="head">
     <div>
       <small class="pill-tag">INDIVIDUAL QUEST</small>
-      <h2>Solo Challenge</h2>
+      <h2 id="indHeaderTitle">Solo Challenge</h2>
     </div>
     <button class="btn back-btn" data-screen="home">🏠 Home</button>
   </div>
-  <div id="individualStart" class="panel form-panel">
+  
+  <div id="individualStart" class="panel form-panel narrow">
     <label>Enter Your Full Name
       <input id="individualName" maxlength="30" placeholder="e.g. Maya Lin" autocomplete="off">
     </label>
     <button id="startIndividual" class="btn btn-primary btn-full">⭐ Start Quest</button>
   </div>
-  <div id="individualArea" class="panel hidden"></div>
+
+  <div id="individualGameContainer" class="hidden">
+    <div class="head">
+      <div>
+        <span id="indLevelBadge" class="team-badge">Level 1</span>
+        <span id="indStepBadge" class="sub-text" style="font-weight: 800; margin-left: 10px;">Question 1 / 10</span>
+      </div>
+      <div class="score-badge">SCORE <b id="indScore">0</b></div>
+    </div>
+    <div class="bar-container"><div id="indProgress" class="bar-fill"></div></div>
+    <div id="individualArea"></div>
+  </div>
 </div>
 </section>
 
