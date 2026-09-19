@@ -171,6 +171,22 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 .team-players { font-size: 14px; color: var(--text-muted); min-height: 40px; display: flex; flex-wrap: wrap; gap: 6px; }
 .player-pill { background: #e2e8f0; padding: 3px 10px; border-radius: 99px; font-weight: 700; color: #1e293b; }
 
+/* Live Leaderboard Modal Items */
+.leaderboard-modal-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+.lb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+}
+.lb-row.my-own-team { border-color: #3b82f6; background: #eff6ff; font-weight: bold; }
+.lb-rank { font-size: 20px; font-weight: 800; width: 40px; }
+.lb-info { flex-grow: 1; }
+.lb-score { font-size: 22px; font-weight: 800; color: #2563eb; }
+
 /* Game progress bar */
 .team-badge { background: #3b82f6; color: white; font-weight: 800; padding: 6px 16px; border-radius: 99px; }
 .score-badge { background: #0f172a; color: white; padding: 8px 18px; border-radius: 16px; font-size: 14px; }
