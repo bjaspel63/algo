@@ -73,7 +73,7 @@
 
   <div class="panel">
     <div class="head">
-      <h3>Live Teams <span id="teamCount" class="count-tag">0 / 6 Active</span></h3>
+      <h3>Live Leaderboard <span id="teamCount" class="count-tag">0 / 6 Active</span></h3>
     </div>
     <div id="leaderboard" class="teams-grid"></div>
   </div>
@@ -118,12 +118,13 @@
 <section id="play" class="screen">
 <div class="wrap">
   <div class="head">
-    <div>
+    <div style="display: flex; align-items: center; gap: 12px;">
       <span id="myTeam" class="team-badge"></span>
-      <h2 id="playTitle">Get Ready...</h2>
+      <button id="openLeaderboard" class="btn btn-primary" style="padding: 6px 14px; font-size: 14px;">🏆 Leaderboard</button>
     </div>
     <div class="score-badge">SCORE <b id="myScore">0</b></div>
   </div>
+  <h2 id="playTitle" style="margin-top: 10px;">Get Ready...</h2>
   <div class="bar-container"><div id="progress" class="bar-fill"></div></div>
   <div id="playArea"></div>
   <p id="playMessage" class="feedback-msg"></p>
@@ -182,6 +183,17 @@
 </div>
 </section>
 </main>
+
+<!-- LIVE LEADERBOARD MODAL (FOR STUDENTS) -->
+<div id="leaderboardModal" class="modal hidden">
+  <div class="winnerCard" style="max-width: 550px; text-align: left;">
+    <div class="head" style="margin-bottom: 15px;">
+      <h2 style="margin:0;">🏆 Live Leaderboard</h2>
+      <button id="closeLeaderboard" class="btn back-btn" style="padding: 6px 14px;">✖ Close</button>
+    </div>
+    <div id="liveLeaderboardList" class="leaderboard-modal-list"></div>
+  </div>
+</div>
 
 <!-- FINISH PROMPT MODAL -->
 <div id="finishPrompt" class="modal hidden">
