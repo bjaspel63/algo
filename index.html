@@ -50,10 +50,7 @@
       <small class="pill-tag">TEACHER HOST</small>
       <h2>Team Quest Host Center</h2>
     </div>
-    <div style="display:flex; gap:10px;">
-      <button id="openReport" class="btn btn-primary">📊 Detailed Team Report</button>
-      <button class="btn back-btn" data-screen="home">🏠 Home</button>
-    </div>
+    <button class="btn back-btn" data-screen="home">🏠 Home</button>
   </div>
   
   <div class="grid2">
@@ -123,7 +120,7 @@
   <div class="head">
     <div style="display: flex; align-items: center; gap: 12px;">
       <span id="myTeam" class="team-badge"></span>
-      <button id="openLeaderboard" class="btn btn-primary" style="padding: 6px 14px; font-size: 14px;">🏆 Fullscreen Leaderboard</button>
+      <button id="openLeaderboard" class="btn btn-primary" style="padding: 6px 14px; font-size: 14px;">🏆 Leaderboard</button>
     </div>
     <div class="score-badge">SCORE <b id="myScore">0</b></div>
   </div>
@@ -187,59 +184,14 @@
 </section>
 </main>
 
-<!-- FULLSCREEN LIVE LEADERBOARD OVERLAY -->
-<div id="leaderboardModal" class="fullscreen-modal hidden">
-  <div class="fullscreen-leaderboard-container">
-    <div class="lb-header">
-      <div>
-        <small class="pill-tag" style="background:#e0f2fe; color:#0284c7;">LIVE STANDINGS</small>
-        <h1>🏆 Leaderboard</h1>
-      </div>
-      <button id="closeLeaderboard" class="btn back-btn btn-lg">✖ Close Leaderboard</button>
+<!-- LIVE LEADERBOARD MODAL (FOR STUDENTS) -->
+<div id="leaderboardModal" class="modal hidden">
+  <div class="winnerCard" style="max-width: 550px; text-align: left;">
+    <div class="head" style="margin-bottom: 15px;">
+      <h2 style="margin:0;">🏆 Live Leaderboard</h2>
+      <button id="closeLeaderboard" class="btn back-btn" style="padding: 6px 14px;">✖ Close</button>
     </div>
-
-    <div id="liveLeaderboardList" class="fullscreen-lb-grid"></div>
-  </div>
-</div>
-
-<!-- DETAILED TEAM REPORT MODAL -->
-<div id="reportModal" class="fullscreen-modal report-theme hidden">
-  <div class="report-container">
-    <div class="lb-header">
-      <div>
-        <small class="pill-tag" style="background:#dcfce7; color:#15803d;">CLASSROOM ANALYTICS</small>
-        <h1>📊 Team Performance Report</h1>
-        <p style="margin:5px 0 0; color:#94a3b8; font-size:16px;">Game Code: <strong id="reportGameCode" style="color:#facc15;">-----</strong></p>
-      </div>
-      <div style="display:flex; gap:12px;">
-        <button onclick="window.print()" class="btn btn-primary">🖨️ Print Report</button>
-        <button id="closeReport" class="btn back-btn btn-lg">✖ Close</button>
-      </div>
-    </div>
-
-    <!-- Overview Stats Bar -->
-    <div class="report-summary-grid">
-      <div class="summary-card">
-        <small>TOTAL STUDENTS</small>
-        <h2 id="repTotalStudents">0</h2>
-      </div>
-      <div class="summary-card">
-        <small>ACTIVE TEAMS</small>
-        <h2 id="repActiveTeams">0 / 6</h2>
-      </div>
-      <div class="summary-card">
-        <small>AVERAGE TEAM SCORE</small>
-        <h2 id="repAvgScore">0 pts</h2>
-      </div>
-      <div class="summary-card">
-        <small>TOP PERFORMING TEAM</small>
-        <h2 id="repTopTeam" style="color:#facc15;">-</h2>
-      </div>
-    </div>
-
-    <!-- Team Detailed Cards -->
-    <h2 style="color:white; margin:30px 0 15px;">Team Breakdown</h2>
-    <div id="reportTeamList" class="report-teams-grid"></div>
+    <div id="liveLeaderboardList" class="leaderboard-modal-list"></div>
   </div>
 </div>
 
@@ -260,10 +212,7 @@
     <h2 id="winnerTitle">Team Wins!</h2>
     <h3 id="winnerPoints">0 points</h3>
     <div id="winnerPlayers" class="winner-list"></div>
-    <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
-      <button id="winnerReportBtn" class="btn btn-primary">📊 View Full Team Report</button>
-      <button id="closeWinner" class="btn back-btn">Back to Home</button>
-    </div>
+    <button id="closeWinner" class="btn btn-primary">Back to Home</button>
   </div>
 </div>
 
