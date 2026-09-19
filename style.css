@@ -11,8 +11,6 @@
   --blue-a: #1e90ff;
   --blue-b: #70a1ff;
 
-  --btn-green: #2ed573;
-  --btn-red: #ff4757;
   --card-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
 }
 
@@ -23,6 +21,11 @@ body {
   color: var(--text-dark);
   font-family: var(--font-main);
   min-height: 100vh;
+}
+
+/* Hide helper - Crucial fix */
+.hidden {
+  display: none !important;
 }
 
 header {
