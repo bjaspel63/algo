@@ -3,85 +3,185 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Algorithm Quest</title>
+<title>Algorithm Quest 🤖✨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header><b>🤖 Algorithm Quest</b><span id="connection">Checking…</span></header>
+<header>
+  <div class="logo">🤖 Algorithm Quest 🚀</div>
+  <span id="connection" class="badge">Checking connection…</span>
+</header>
 
 <main>
+<!-- HOME SCREEN -->
 <section id="home" class="screen active">
   <div class="hero">
-    <small>P4 ICT • ALGORITHMS</small>
-    <h1>Choose your challenge</h1>
-    <p>Team up, solve problems, and become an algorithm expert.</p>
+    <div class="pill-tag">✨ P4 ICT • ALGORITHMS & LOGIC ✨</div>
+    <h1>Choose Your Algorithmic Quest! 🎮</h1>
+    <p>Team up with classmates, program robots, and level up your computing skills!</p>
     <div class="cards">
-      <button data-screen="teacher"><strong>🏆 Team Challenge</strong><small>Teacher Host</small></button>
-      <button data-screen="student"><strong>👥 Join Team Game</strong><small>Student</small></button>
-      <button data-screen="individual"><strong>⭐ Individual</strong><small>Earn a certificate</small></button>
+      <button data-screen="teacher" class="card-btn teacher-btn">
+        <span class="card-icon">🏆</span>
+        <strong>Teacher Host</strong>
+        <small>Host game & track teams live</small>
+      </button>
+      <button data-screen="student" class="card-btn student-btn">
+        <span class="card-icon">👥</span>
+        <strong>Join Team Game</strong>
+        <small>Play together with your team</small>
+      </button>
+      <button data-screen="individual" class="card-btn individual-btn">
+        <span class="card-icon">⭐</span>
+        <strong>Individual Mode</strong>
+        <small>Play solo & earn certificate</small>
+      </button>
     </div>
   </div>
 </section>
 
+<!-- TEACHER HOST SCREEN -->
 <section id="teacher" class="screen">
 <div class="wrap">
-  <div class="head"><div><small>TEACHER HOST</small><h2>Team Challenge</h2></div><button class="back" data-screen="home">Home</button></div>
-  <div class="grid2">
-    <div class="panel center"><small>GAME CODE</small><div id="gameCode" class="code">-----</div><button id="createGame">Create New Game</button><p id="hostMessage">Create a game before students join.</p></div>
-    <div class="panel"><small>GAME STATUS</small><h3 id="hostLevel">Lobby</h3><p id="hostProgress">Waiting for a game.</p><button id="startGame" disabled>Start Level 1</button><button id="finishGame" class="danger" disabled>Finish</button></div>
+  <div class="head">
+    <div>
+      <small class="pill-tag">TEACHER HOST</small>
+      <h2>Team Quest Host Center</h2>
+    </div>
+    <button class="btn back-btn" data-screen="home">🏠 Home</button>
   </div>
-  <div class="panel"><div class="head"><h3>Live Teams</h3><span id="teamCount">0 teams</span></div><div id="leaderboard">No teams yet.</div></div>
+  
+  <div class="grid2">
+    <div class="panel center highlight-panel">
+      <small>GAME ACCESS CODE</small>
+      <div id="gameCode" class="code">-----</div>
+      <button id="createGame" class="btn btn-primary btn-lg">🎲 Create New Game</button>
+      <p id="hostMessage" class="sub-text">Click to generate a code for your class.</p>
+    </div>
+    <div class="panel">
+      <small>GAME STATUS</small>
+      <h3 id="hostLevel" class="status-title">Lobby</h3>
+      <p id="hostProgress" class="sub-text">Waiting for game to start.</p>
+      <div class="action-row">
+        <button id="startGame" class="btn btn-success" disabled>🚀 Start Level 1</button>
+        <button id="finishGame" class="btn btn-danger" disabled>🏁 Finish Game</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="head">
+      <h3>Live Teams <span id="teamCount" class="count-tag">0 / 6 Active</span></h3>
+    </div>
+    <div id="leaderboard" class="teams-grid">
+      <!-- 6 Teams rendering grid -->
+    </div>
+  </div>
 </div>
 </section>
 
+<!-- STUDENT JOIN SCREEN -->
 <section id="student" class="screen">
 <div class="wrap narrow">
-  <div class="head"><div><small>STUDENT</small><h2>Join a Team</h2></div><button class="back" data-screen="home">Home</button></div>
-  <div class="panel">
-    <label>Game code<input id="joinCode" maxlength="5" placeholder="ABCDE"></label>
-    <label>Your name<input id="studentName" maxlength="30" placeholder="e.g. Alex"></label>
-    <label>Team<select id="team"><option value="">Choose team</option><option>Red</option><option>Blue</option><option>Green</option><option>Yellow</option></select></label>
-    <button id="joinGame">Join Game</button>
-    <p id="joinMessage"></p>
+  <div class="head">
+    <div>
+      <small class="pill-tag">STUDENT LOGIN</small>
+      <h2>Join Team Game</h2>
+    </div>
+    <button class="btn back-btn" data-screen="home">🏠 Home</button>
+  </div>
+  <div class="panel form-panel">
+    <label>Room Code
+      <input id="joinCode" maxlength="5" placeholder="e.g. ABCDE" autocomplete="off">
+    </label>
+    <label>Your Name
+      <input id="studentName" maxlength="25" placeholder="e.g. Alex" autocomplete="off">
+    </label>
+    <label>Select Team
+      <select id="team">
+        <option value="">Choose your team...</option>
+        <option value="Red A">🔴 Red A</option>
+        <option value="Red B">🔻 Red B</option>
+        <option value="Yellow A">🟡 Yellow A</option>
+        <option value="Yellow B">⚡ Yellow B</option>
+        <option value="Blue A">🔵 Blue A</option>
+        <option value="Blue B">🔷 Blue B</option>
+      </select>
+    </label>
+    <button id="joinGame" class="btn btn-primary btn-full">🚀 Join Game!</button>
+    <p id="joinMessage" class="error-text"></p>
   </div>
 </div>
 </section>
 
+<!-- TEAM PLAY SCREEN -->
 <section id="play" class="screen">
 <div class="wrap">
-  <div class="head"><div><span id="myTeam" class="tag"></span><h2 id="playTitle">Waiting…</h2></div><div class="score">SCORE <b id="myScore">0</b></div></div>
-  <div class="bar"><i id="progress"></i></div>
+  <div class="head">
+    <div>
+      <span id="myTeam" class="team-badge"></span>
+      <h2 id="playTitle">Get Ready...</h2>
+    </div>
+    <div class="score-badge">SCORE <b id="myScore">0</b></div>
+  </div>
+  <div class="bar-container"><div id="progress" class="bar-fill"></div></div>
   <div id="playArea"></div>
-  <p id="playMessage"></p>
+  <p id="playMessage" class="feedback-msg"></p>
 </div>
 </section>
 
+<!-- INDIVIDUAL MODE SCREEN -->
 <section id="individual" class="screen">
 <div class="wrap narrow">
-  <div class="head"><div><small>INDIVIDUAL</small><h2>Challenge</h2></div><button class="back" data-screen="home">Home</button></div>
-  <div id="individualStart" class="panel">
-    <label>Your name<input id="individualName" maxlength="30" placeholder="Enter your name"></label>
-    <button id="startIndividual">Start</button>
+  <div class="head">
+    <div>
+      <small class="pill-tag">INDIVIDUAL QUEST</small>
+      <h2>Solo Challenge</h2>
+    </div>
+    <button class="btn back-btn" data-screen="home">🏠 Home</button>
+  </div>
+  <div id="individualStart" class="panel form-panel">
+    <label>Enter Your Full Name
+      <input id="individualName" maxlength="30" placeholder="e.g. Maya Lin" autocomplete="off">
+    </label>
+    <button id="startIndividual" class="btn btn-primary btn-full">⭐ Start Quest</button>
   </div>
   <div id="individualArea" class="panel hidden"></div>
 </div>
 </section>
 
+<!-- CERTIFICATE SCREEN -->
 <section id="certificate" class="screen">
-<div class="certificate">
-  <div>⭐</div><small>ALGORITHM QUEST</small><h1>Certificate of Achievement</h1>
-  <p>Presented to</p><h2 id="certificateName"></h2>
-  <p>for completing the Individual Challenge</p>
-  <div class="finalScore">FINAL SCORE<br><b id="certificateScore">0</b></div>
-  <p id="certificateDate"></p>
-  <button onclick="window.print()">Print Certificate</button>
-  <button class="back" data-screen="home">Home</button>
+<div class="wrap">
+  <div class="certificate">
+    <div class="cert-star">⭐🏆⭐</div>
+    <small>ALGORITHM QUEST CERTIFICATE</small>
+    <h1>Certificate of Achievement</h1>
+    <p class="cert-p">This is proudly presented to</p>
+    <h2 id="certificateName">Student Name</h2>
+    <p class="cert-p">for demonstrating mastery in algorithms, sequencing, and visual programming!</p>
+    <div class="finalScore">FINAL SCORE<br><b id="certificateScore">0</b></div>
+    <p id="certificateDate" class="cert-date"></p>
+    <div class="cert-actions">
+      <button onclick="window.print()" class="btn btn-primary">🖨️ Print Certificate</button>
+      <button class="btn back-btn" data-screen="home">🏠 Home</button>
+    </div>
+  </div>
 </div>
 </section>
 </main>
 
+<!-- WINNER MODAL -->
 <div id="winner" class="modal hidden">
-  <div class="winnerCard"><div class="big">🏆</div><h2 id="winnerTitle"></h2><h3 id="winnerPoints"></h3><div id="winnerPlayers"></div><button id="closeWinner">Close</button></div>
+  <div class="winnerCard">
+    <div class="big-emoji">🏆</div>
+    <h2 id="winnerTitle">Team Wins!</h2>
+    <h3 id="winnerPoints">0 points</h3>
+    <div id="winnerPlayers" class="winner-list"></div>
+    <button id="closeWinner" class="btn btn-primary">Back to Home</button>
+  </div>
 </div>
 
 <script type="module" src="app.js"></script>
