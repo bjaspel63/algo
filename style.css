@@ -185,7 +185,7 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
   animation: fadeIn 0.25s ease-out;
 }
 
-.fullscreen-leaderboard-container {
+.fullscreen-leaderboard-container, .report-container {
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -258,6 +258,42 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
 }
 .lb-level-tag { color: #94a3b8; font-size: 15px; font-weight: 700; margin-top: 4px; }
 .lb-points { font-size: 36px; font-weight: 900; color: #facc15; }
+
+/* TEAM REPORT STYLES */
+.report-theme { background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); }
+.report-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+.summary-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 20px;
+  color: white;
+}
+.summary-card small { color: #94a3b8; font-weight: 800; letter-spacing: 0.05em; }
+.summary-card h2 { margin: 10px 0 0; font-size: 32px; color: #60a5fa; }
+
+.report-teams-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+.report-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  padding: 24px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.report-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.report-card-head h3 { margin: 0; font-size: 24px; }
+.report-score-pill { background: #facc15; color: #0f172a; padding: 6px 14px; border-radius: 12px; font-weight: 900; font-size: 20px; }
+.report-meta { display: grid; gap: 10px; margin: 15px 0; font-size: 14px; color: #cbd5e1; }
+.report-progress-bar { height: 10px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.report-progress-fill { height: 100%; background: linear-gradient(90deg, #3b82f6, #2ed573); }
 
 /* Game progress bar */
 .team-badge { background: #3b82f6; color: white; font-weight: 800; padding: 6px 16px; border-radius: 99px; }
@@ -389,7 +425,10 @@ input:focus, select:focus, textarea:focus { border-color: #3b82f6; background: w
   .lb-points { font-size: 28px; }
 }
 @media print {
-  header, .cert-actions { display: none!important; }
+  header, .cert-actions, .btn, button { display: none!important; }
   .screen { padding: 0; }
+  .fullscreen-modal { position: absolute; background: white; color: black; padding: 0; }
+  .report-card, .summary-card { background: #f8fafc; border: 1px solid #cbd5e1; color: black; }
+  .summary-card h2, .lb-header h1 { color: #0f172a!important; }
   .certificate { border-width: 6px; }
 }
