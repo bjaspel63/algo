@@ -75,9 +75,7 @@
     <div class="head">
       <h3>Live Teams <span id="teamCount" class="count-tag">0 / 6 Active</span></h3>
     </div>
-    <div id="leaderboard" class="teams-grid">
-      <!-- 6 Teams rendering grid -->
-    </div>
+    <div id="leaderboard" class="teams-grid"></div>
   </div>
 </div>
 </section>
@@ -172,6 +170,16 @@
 </div>
 </section>
 </main>
+
+<!-- FINISH PROMPT MODAL -->
+<div id="finishPrompt" class="modal hidden">
+  <div class="winnerCard">
+    <div class="big-emoji">🎉</div>
+    <h2>Challenge Completed!</h2>
+    <p id="finishPromptMessage">Awesome work! You've completed all levels in this quest.</p>
+    <button id="closeFinishPrompt" class="btn btn-primary">Continue</button>
+  </div>
+</div>
 
 <!-- WINNER MODAL -->
 <div id="winner" class="modal hidden">
