@@ -12,6 +12,9 @@ const clean = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','
 
 let code = "", team = "", playerName = "", playerId = "", game = null, listeners = [], clock = null;
 
+// Total game steps: 10 MCQ + 5 SEQ + 3 Robot = 18 total steps
+const TOTAL_GAME_STEPS = 18;
+
 // 10 MCQs Bank
 const MCQ = [
   ["What is an algorithm?", ["A step-by-step set of instructions", "A type of computer screen", "A secret password", "A colorful picture"], 0],
@@ -66,9 +69,13 @@ function teamsObject() {
   };
 }
 
-// Fullscreen Leaderboard toggle
+// Modal Handlers
 $("openLeaderboard").onclick = () => $("leaderboardModal").classList.remove("hidden");
 $("closeLeaderboard").onclick = () => $("leaderboardModal").classList.add("hidden");
+
+$("openReport").onclick = () => { renderTeamReport(); $("reportModal").classList.remove("hidden"); };
+$("winnerReportBtn").onclick = () => { $("winner").classList.add("hidden"); renderTeamReport(); $("reportModal").classList.remove("hidden"); };
+$("closeReport").onclick = () => $("reportModal").classList.add("hidden");
 
 // Teacher Host
 $("createGame").onclick = async () => {
@@ -87,8 +94,6 @@ function watchHost() {
   listeners.push(onValue(gameRef(), s => {
     game = s.val(); if (!game) return;
     const teamEntries = Object.entries(game.teams || {});
-    
-    // Sort teams by live score for the host view
     const sortedEntries = [...teamEntries].sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
     const activeCount = sortedEntries.filter(([_, v]) => Object.keys(v.participants || {}).length > 0).length;
     $("teamCount").textContent = `${activeCount} / 6 Active`;
@@ -178,7 +183,7 @@ function watchStudent() {
   }));
 }
 
-// Fullscreen Leaderboard Updater
+// Fullscreen Leaderboard
 function updateFullscreenLeaderboard(sortedEntries) {
   const ranks = ["🥇", "🥈", "🥉"];
   $("liveLeaderboardList").innerHTML = sortedEntries.map(([tName, tData], idx) => {
@@ -199,6 +204,70 @@ function updateFullscreenLeaderboard(sortedEntries) {
           </div>
         </div>
         <div class="lb-points">${tData.score || 0} <span style="font-size:18px; color:#94a3b8;">pts</span></div>
+      </div>`;
+  }).join("");
+}
+
+// Generate Team Performance Report
+function renderTeamReport() {
+  if (!game || !game.teams) return;
+  $("reportGameCode").textContent = code || "-----";
+
+  const entries = Object.entries(game.teams);
+  const sorted = [...entries].sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
+  
+  let totalStudents = 0;
+  let activeTeamsCount = 0;
+  let totalScoreSum = 0;
+
+  sorted.forEach(([_, t]) => {
+    const pCount = Object.keys(t.participants || {}).length;
+    if (pCount > 0) activeTeamsCount++;
+    totalStudents += pCount;
+    totalScoreSum += (t.score || 0);
+  });
+
+  const avgScore = activeTeamsCount > 0 ? Math.round(totalScoreSum / activeTeamsCount) : 0;
+
+  $("repTotalStudents").textContent = totalStudents;
+  $("repActiveTeams").textContent = `${activeTeamsCount} / 6`;
+  $("repAvgScore").textContent = `${avgScore} pts`;
+  $("repTopTeam").textContent = sorted[0]?.[1]?.score > 0 ? clean(sorted[0][0]) : "N/A";
+
+  const ranks = ["🥇 Gold", "🥈 Silver", "🥉 Bronze"];
+
+  $("reportTeamList").innerHTML = sorted.map(([tName, tData], idx) => {
+    const players = Object.values(tData.participants || {}).map(p => clean(p.name));
+    
+    // Calculate total steps completed by team
+    let completedSteps = 0;
+    if (tData.finished) {
+      completedSteps = TOTAL_GAME_STEPS;
+    } else {
+      const lvl = tData.level || 1;
+      const idxStep = tData.index || 0;
+      completedSteps = lvl === 1 ? idxStep : lvl === 2 ? 10 + idxStep : 15 + idxStep;
+    }
+
+    const pct = Math.min(100, Math.round((completedSteps / TOTAL_GAME_STEPS) * 100));
+
+    return `
+      <div class="report-card">
+        <div>
+          <div class="report-card-head">
+            <div>
+              <small style="color:#94a3b8; font-weight:800;">${ranks[idx] || `Rank #${idx + 1}`}</small>
+              <h3>${clean(tName)}</h3>
+            </div>
+            <div class="report-score-pill">${tData.score || 0} pts</div>
+          </div>
+          <div class="report-meta">
+            <div><b>Roster (${players.length}):</b> ${players.length ? players.join(", ") : "<i>No members</i>"}</div>
+            <div><b>Current Stage:</b> ${tData.finished ? "🏁 Completed All 3 Levels!" : `Level ${tData.level \vert{}\vert{} 1} • Q${(tData.index || 0) + 1}`}</div>
+            <div><b>Overall Progress:</b> ${completedSteps} / ${TOTAL_GAME_STEPS} Steps (${pct}%)</div>
+            <div class="report-progress-bar"><div class="report-progress-fill" style="width:${pct}%;"></div></div>
+          </div>
+        </div>
       </div>`;
   }).join("");
 }
