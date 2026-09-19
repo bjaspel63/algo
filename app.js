@@ -66,6 +66,10 @@ function teamsObject() {
   };
 }
 
+// Modal controls for Live Leaderboard
+$("openLeaderboard").onclick = () => $("leaderboardModal").classList.remove("hidden");
+$("closeLeaderboard").onclick = () => $("leaderboardModal").classList.add("hidden");
+
 // Teacher Host
 $("createGame").onclick = async () => {
   try {
@@ -83,18 +87,24 @@ function watchHost() {
   listeners.push(onValue(gameRef(), s => {
     game = s.val(); if (!game) return;
     const teamEntries = Object.entries(game.teams || {});
-    const activeCount = teamEntries.filter(([_, v]) => Object.keys(v.participants || {}).length > 0).length;
+    
+    // Sort teams by live score for the host view
+    const sortedEntries = [...teamEntries].sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
+    const activeCount = sortedEntries.filter(([_, v]) => Object.keys(v.participants || {}).length > 0).length;
     $("teamCount").textContent = `${activeCount} / 6 Active`;
 
-    $("leaderboard").innerHTML = teamEntries.map(([tName, tData]) => {
+    const ranks = ["🥇", "🥈", "🥉"];
+
+    $("leaderboard").innerHTML = sortedEntries.map(([tName, tData], idx) => {
       const players = Object.values(tData.participants || {}).map(p => clean(p.name));
       const cssClass = tName.replace(" ", "-");
       const lvlStr = tData.finished ? "Finished 🏁" : `Lvl ${tData.level || 1} • Q${(tData.index || 0) + 1}`;
+      const rankBadge = ranks[idx] || `#${idx + 1}`;
       return `
         <div class="team-card team-${cssClass} ${players.length ? 'has-players' : ''}">
           <div class="team-card-head">
             <div>
-              <span class="team-name">${clean(tName)}</span>
+              <span class="team-name">${rankBadge} ${clean(tName)}</span>
               <div style="font-size:12px; color:#64748b; font-weight:800; margin-top:2px;">${lvlStr}</div>
             </div>
             <span class="team-score">${tData.score || 0} pts</span>
@@ -107,7 +117,9 @@ function watchHost() {
 
     $("hostLevel").textContent = game.status === "playing" ? "Game in Progress" : "Lobby";
     $("hostProgress").textContent = game.status === "playing" ? "Teams are progressing independently." : "Students may join now.";
-    if (game.status === "finished") celebrateHost(teamEntries);
+    
+    updateModalLeaderboard(sortedEntries);
+    if (game.status === "finished") celebrateHost(sortedEntries);
   }));
 }
 
@@ -142,8 +154,13 @@ $("joinGame").onclick = async () => {
 function watchStudent() {
   listeners.push(onValue(gameRef(), s => {
     game = s.val(); if (!game) return;
+    const teamEntries = Object.entries(game.teams || {});
+    const sortedEntries = [...teamEntries].sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
+
     const teamData = game.teams?.[team] || {};
     $("myScore").textContent = teamData.score || 0;
+
+    updateModalLeaderboard(sortedEntries);
 
     if (game.status !== "playing") {
       $("playTitle").textContent = "Waiting in Lobby...";
@@ -159,6 +176,25 @@ function watchStudent() {
 
     renderTeamLevel(teamData.level || 1, teamData.index || 0);
   }));
+}
+
+// Render Live Leaderboard Modal Content
+function updateModalLeaderboard(sortedEntries) {
+  const ranks = ["🥇", "🥈", "🥉"];
+  $("liveLeaderboardList").innerHTML = sortedEntries.map(([tName, tData], idx) => {
+    const isMine = tName === team;
+    const rankIcon = ranks[idx] || `#${idx + 1}`;
+    const levelStr = tData.finished ? "🏁 Finished" : `Lvl ${tData.level || 1}`;
+    return `
+      <div class="lb-row ${isMine ? 'my-own-team' : ''}">
+        <span class="lb-rank">${rankIcon}</span>
+        <div class="lb-info">
+          <div><strong>${clean(tName)}</strong> ${isMine ? '(Your Team)' : ''}</div>
+          <small class="sub-text">${levelStr}</small>
+        </div>
+        <span class="lb-score">${tData.score || 0} pts</span>
+      </div>`;
+  }).join("");
 }
 
 function submissionKey(curLevel, curIndex) {
@@ -264,7 +300,7 @@ function renderSeq(idx, level, isIndividual = false, onIndComplete = null) {
   function drawSeqUI() {
     container.innerHTML = `
       <div class="panel">
-        <div style="display:flex; justify-space-between; align-items:center;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
           <h3>${clean(title)}</h3>
           <div class="timer-box" style="font-size:22px; margin:0;">⏱️ <span id="seqTimer">45</span>s</div>
         </div>
@@ -525,10 +561,9 @@ function showFinishPrompt(msg) {
 }
 $("closeFinishPrompt").onclick = () => $("finishPrompt").classList.add("hidden");
 
-function celebrateHost(teamEntries) {
-  const sorted = [...teamEntries].sort((a, b) => (b[1].score || 0) - (a[1].score || 0));
-  const maxScore = sorted[0]?.[1]?.score || 0;
-  const winners = sorted.filter(([_, v]) => (v.score || 0) === maxScore && maxScore > 0);
+function celebrateHost(sortedEntries) {
+  const maxScore = sortedEntries[0]?.[1]?.score || 0;
+  const winners = sortedEntries.filter(([_, v]) => (v.score || 0) === maxScore && maxScore > 0);
 
   if (winners.length === 0) {
     $("winnerTitle").textContent = "Game Finished!";
@@ -546,7 +581,7 @@ function celebrateHost(teamEntries) {
 
 $("closeWinner").onclick = () => { $("winner").classList.add("hidden"); show("home"); };
 
-// Individual Mode Engine (10 MCQs, 5 Sequences, 3 Robots)
+// Individual Mode Engine
 let ind = { name: "", score: 0, level: 1, index: 0 };
 
 $("startIndividual").onclick = () => {
@@ -569,19 +604,19 @@ function renderIndividualStep() {
   if (ind.level === 1) {
     renderMCQ(ind.index, 1, true, () => {
       ind.index++;
-      if (ind.index >= MCQ.length) { ind.level = 2; ind.index = 0; } // 10 MCQs
+      if (ind.index >= MCQ.length) { ind.level = 2; ind.index = 0; }
       renderIndividualStep();
     });
   } else if (ind.level === 2) {
     renderSeq(ind.index, 2, true, () => {
       ind.index++;
-      if (ind.index >= SEQ.length) { ind.level = 3; ind.index = 0; } // 5 Sequences
+      if (ind.index >= SEQ.length) { ind.level = 3; ind.index = 0; }
       renderIndividualStep();
     });
   } else if (ind.level === 3) {
     renderRobot(ind.index, 3, true, () => {
       ind.index++;
-      if (ind.index >= ROBOT_MAPS.length) finishIndividual(); // 3 Robots
+      if (ind.index >= ROBOT_MAPS.length) finishIndividual();
       else renderIndividualStep();
     });
   }
