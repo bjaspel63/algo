@@ -50,7 +50,10 @@
       <small class="pill-tag">TEACHER HOST</small>
       <h2>Team Quest Host Center</h2>
     </div>
-    <button class="btn back-btn" data-screen="home">🏠 Home</button>
+    <div style="display:flex; gap:10px;">
+      <button id="openReport" class="btn btn-primary">📊 Detailed Team Report</button>
+      <button class="btn back-btn" data-screen="home">🏠 Home</button>
+    </div>
   </div>
   
   <div class="grid2">
@@ -199,6 +202,47 @@
   </div>
 </div>
 
+<!-- DETAILED TEAM REPORT MODAL -->
+<div id="reportModal" class="fullscreen-modal report-theme hidden">
+  <div class="report-container">
+    <div class="lb-header">
+      <div>
+        <small class="pill-tag" style="background:#dcfce7; color:#15803d;">CLASSROOM ANALYTICS</small>
+        <h1>📊 Team Performance Report</h1>
+        <p style="margin:5px 0 0; color:#94a3b8; font-size:16px;">Game Code: <strong id="reportGameCode" style="color:#facc15;">-----</strong></p>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button onclick="window.print()" class="btn btn-primary">🖨️ Print Report</button>
+        <button id="closeReport" class="btn back-btn btn-lg">✖ Close</button>
+      </div>
+    </div>
+
+    <!-- Overview Stats Bar -->
+    <div class="report-summary-grid">
+      <div class="summary-card">
+        <small>TOTAL STUDENTS</small>
+        <h2 id="repTotalStudents">0</h2>
+      </div>
+      <div class="summary-card">
+        <small>ACTIVE TEAMS</small>
+        <h2 id="repActiveTeams">0 / 6</h2>
+      </div>
+      <div class="summary-card">
+        <small>AVERAGE TEAM SCORE</small>
+        <h2 id="repAvgScore">0 pts</h2>
+      </div>
+      <div class="summary-card">
+        <small>TOP PERFORMING TEAM</small>
+        <h2 id="repTopTeam" style="color:#facc15;">-</h2>
+      </div>
+    </div>
+
+    <!-- Team Detailed Cards -->
+    <h2 style="color:white; margin:30px 0 15px;">Team Breakdown</h2>
+    <div id="reportTeamList" class="report-teams-grid"></div>
+  </div>
+</div>
+
 <!-- FINISH PROMPT MODAL -->
 <div id="finishPrompt" class="modal hidden">
   <div class="winnerCard">
@@ -216,7 +260,10 @@
     <h2 id="winnerTitle">Team Wins!</h2>
     <h3 id="winnerPoints">0 points</h3>
     <div id="winnerPlayers" class="winner-list"></div>
-    <button id="closeWinner" class="btn btn-primary">Back to Home</button>
+    <div style="margin-top:20px; display:flex; gap:10px; justify-content:center;">
+      <button id="winnerReportBtn" class="btn btn-primary">📊 View Full Team Report</button>
+      <button id="closeWinner" class="btn back-btn">Back to Home</button>
+    </div>
   </div>
 </div>
 
