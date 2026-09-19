@@ -66,7 +66,7 @@ function teamsObject() {
   };
 }
 
-// Modal controls for Live Leaderboard
+// Fullscreen Leaderboard toggle
 $("openLeaderboard").onclick = () => $("leaderboardModal").classList.remove("hidden");
 $("closeLeaderboard").onclick = () => $("leaderboardModal").classList.add("hidden");
 
@@ -118,7 +118,7 @@ function watchHost() {
     $("hostLevel").textContent = game.status === "playing" ? "Game in Progress" : "Lobby";
     $("hostProgress").textContent = game.status === "playing" ? "Teams are progressing independently." : "Students may join now.";
     
-    updateModalLeaderboard(sortedEntries);
+    updateFullscreenLeaderboard(sortedEntries);
     if (game.status === "finished") celebrateHost(sortedEntries);
   }));
 }
@@ -160,7 +160,7 @@ function watchStudent() {
     const teamData = game.teams?.[team] || {};
     $("myScore").textContent = teamData.score || 0;
 
-    updateModalLeaderboard(sortedEntries);
+    updateFullscreenLeaderboard(sortedEntries);
 
     if (game.status !== "playing") {
       $("playTitle").textContent = "Waiting in Lobby...";
@@ -178,21 +178,27 @@ function watchStudent() {
   }));
 }
 
-// Render Live Leaderboard Modal Content
-function updateModalLeaderboard(sortedEntries) {
+// Fullscreen Leaderboard Updater
+function updateFullscreenLeaderboard(sortedEntries) {
   const ranks = ["🥇", "🥈", "🥉"];
   $("liveLeaderboardList").innerHTML = sortedEntries.map(([tName, tData], idx) => {
     const isMine = tName === team;
     const rankIcon = ranks[idx] || `#${idx + 1}`;
-    const levelStr = tData.finished ? "🏁 Finished" : `Lvl ${tData.level || 1}`;
+    const levelStr = tData.finished ? "🏁 Finished All Challenges" : `Level ${tData.level || 1} • Question ${(tData.index || 0) + 1}`;
+    
     return `
-      <div class="lb-row ${isMine ? 'my-own-team' : ''}">
-        <span class="lb-rank">${rankIcon}</span>
-        <div class="lb-info">
-          <div><strong>${clean(tName)}</strong> ${isMine ? '(Your Team)' : ''}</div>
-          <small class="sub-text">${levelStr}</small>
+      <div class="lb-card rank-${idx + 1} ${isMine ? 'is-my-team' : ''}">
+        <div class="lb-left">
+          <span class="lb-rank-badge">${rankIcon}</span>
+          <div>
+            <div class="lb-team-title">
+              ${clean(tName)}
+              ${isMine ? '<span class="lb-my-tag">YOUR TEAM</span>' : ''}
+            </div>
+            <div class="lb-level-tag">${levelStr}</div>
+          </div>
         </div>
-        <span class="lb-score">${tData.score || 0} pts</span>
+        <div class="lb-points">${tData.score || 0} <span style="font-size:18px; color:#94a3b8;">pts</span></div>
       </div>`;
   }).join("");
 }
